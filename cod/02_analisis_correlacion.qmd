@@ -1,0 +1,41 @@
+---
+title: "02_analisis_correlacion"
+format: 
+  html:
+    embed-resources: true
+    self-contained-math: true
+---
+
+```{r}
+library(tidyverse)
+library(corrplot)
+
+#Cargo datos 
+df <- read_csv("../data/DATA (1).csv")
+
+#Seleccionar y renombrar variables numéricas (factores ordinales a numérico)
+df_num <- df %>%
+  transmute(
+    Edad = as.numeric(factor(`1`, levels = 1:3, labels = 1:3)),
+    Beca = as.numeric(factor(`4`, levels = 1:5, labels = 1:5)),
+    Salario = as.numeric(factor(`8`, levels = 1:5, labels = 1:5)),
+    Hermanos = as.numeric(factor(`13`, levels = 1:5, labels = 1:5)),
+    EstudioSem = as.numeric(factor(`17`, levels = 1:5, labels = 1:5)),
+    GPA_Ult = as.numeric(factor(`29`, levels = 1:5, labels = 1:5)),
+    GPA_Esp = as.numeric(factor(`30`, levels = 1:5, labels = 1:5))
+  )
+
+#Calcular matriz de correlación con método Pearson, usando pares completos
+cor_matrix <- cor(df_num, use = "pairwise.complete.obs", method = "pearson")
+
+```
+
+```{r fig.height=5, fig.path='plots/', fig.width=7, dpi=300}
+#| label: Distribución de variables numéricas}
+#Visualizar con corrplot
+corrplot(cor_matrix, method = "color", addCoef.col = "black",
+         tl.cex = 0.7, # Tamaño de letra más pequeño
+         number.cex = 0.8, 
+         tl.srt = 0)
+```
+
