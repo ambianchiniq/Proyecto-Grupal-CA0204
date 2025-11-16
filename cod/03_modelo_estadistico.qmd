@@ -1,0 +1,64 @@
+---
+title: "03_modelo_estadistico"
+format: 
+  html:
+    embed-resources: true
+    self-contained-math: true
+---
+
+```{r}
+library(tidyverse)
+
+df <- read_csv("../data/DATA (1).csv")
+
+#Crear dataframe numérico para el modelo
+df_model <- df %>%
+  transmute(
+    GPA_Ultimo = as.numeric(factor(`29`, levels = 1:5, labels = 1:5)),
+    Edad = as.numeric(factor(`1`, levels = 1:3, labels = 1:3)),
+    Beca = as.numeric(factor(`4`, levels = 1:5, labels = 1:5)),
+    Salario = as.numeric(factor(`8`, levels = 1:5, labels = 1:5)),
+    EstudioSemanal = as.numeric(factor(`17`, levels = 1:5, labels = 1:5)),
+    Hermanos = as.numeric(factor(`13`, levels = 1:5, labels = 1:5))
+  ) %>% 
+  drop_na() 
+
+#lm() para ver como se relacionan las variables independientes (edad, beca, salario, etc.) con la variable dependiente GPA_Ultimo.
+modelo <- lm(GPA_Ultimo ~ Edad + Beca + Salario + EstudioSemanal + Hermanos, data = df_model)
+
+#Resumen estándar 
+summary(modelo)
+
+```
+
+```{r fig.height=5, fig.path='plots/', fig.width=7, dpi=300}
+#| label: Coeficientes del modelo de regresión
+
+coefs <- summary(modelo)$coefficients
+coefs_df <- as.data.frame(coefs)
+coefs_df$Variable <- rownames(coefs_df)
+
+#Gráfico del resumen
+ggplot(coefs_df %>% filter(Variable != '(Intercept)'), 
+       aes(x = Variable, y = Estimate)) +
+  geom_col(fill = "darkblue", alpha = 0.8) +
+  geom_errorbar(aes(ymin = Estimate - `Std. Error`, ymax = Estimate + `Std. Error`), 
+                width = 0.2, color = "black") +
+  geom_hline(yintercept = 0, linetype = 2, color = "grey") +
+  labs(title = "Coeficientes del modelo de regresión",
+       x = "Variable explicativa",
+       y = "Efecto estimado (± Error estándar)") +
+  theme_minimal()
+
+```
+
+
+```{r fig.height=5, fig.path='plots/', fig.width=7, dpi=300}
+#| label: Gráficos de diagnóstico del modelo
+
+#Gráficos de diagnóstico 
+par(mfrow = c(2, 2))
+plot(modelo)
+
+```
+
