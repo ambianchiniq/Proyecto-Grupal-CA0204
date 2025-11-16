@@ -69,7 +69,7 @@ ggplot(df_num_long, aes(y = Categoria, fill = Categoria)) +
 ```
 
 ```{r fig.height=5, fig.path='plots/', fig.width=7, dpi=300}
-#| label: Distribución de variables categóricas}
+#| label: Distribución de variables categóricas
 #Gráfico de barras variables categóricas
 ggplot(df_cat_long, aes(y = Categoria, fill = Categoria)) +
   geom_bar() +
@@ -81,7 +81,7 @@ ggplot(df_cat_long, aes(y = Categoria, fill = Categoria)) +
 ```
 
 ```{r fig.height=5, fig.path='plots/', fig.width=7, dpi=300}
-#| label: Proporción de GPA esperado según tipo de beca}
+#| label: Proporción de GPA esperado según tipo de beca
 #Proporción de GPA esperado según tipo de beca
 ggplot(df_num, aes(x = Beca, fill = GPA_Esperado)) +
   geom_bar(position = "fill") +
@@ -91,7 +91,7 @@ ggplot(df_num, aes(x = Beca, fill = GPA_Esperado)) +
 ```
 
 ```{r fig.height=5, fig.path='plots/', fig.width=7, dpi=300}
-#| label: Horas de estudio por semana según edad}
+#| label: Horas de estudio por semana según edad
 #Horas de estudio por semana según edad
 ggplot(df_num, aes(x = Edad, fill = EstudioSemanal)) +
   geom_bar(position = "dodge") +  

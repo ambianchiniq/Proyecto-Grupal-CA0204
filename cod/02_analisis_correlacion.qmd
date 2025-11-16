@@ -31,7 +31,7 @@ cor_matrix <- cor(df_num, use = "pairwise.complete.obs", method = "pearson")
 ```
 
 ```{r fig.height=5, fig.path='plots/', fig.width=7, dpi=300}
-#| label: Correlación de variables numéricas}
+#| label: Correlación de variables numéricas
 #Visualizar con corrplot
 corrplot(cor_matrix, method = "color", addCoef.col = "black",
          tl.cex = 0.7, # Tamaño de letra más pequeño
